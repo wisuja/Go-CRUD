@@ -16,9 +16,8 @@ type Credentials struct {
 func GetConnection(credentials Credentials) (*sql.DB, error) {
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", credentials.Username, credentials.Password, credentials.Host, credentials.Port, credentials.Database)
 	db, _ := sql.Open("mysql", dataSourceName)
-	err := db.Ping()
 
-	if err != nil {
+	if err := db.Ping(); err != nil {
 		return nil, err
 	}
 
@@ -32,9 +31,8 @@ func GetConnection(credentials Credentials) (*sql.DB, error) {
 
 func GetDefaultDatabaseConfig(path string) (Credentials, error) {
 	viper.SetConfigFile(path)
-	err := viper.ReadInConfig()
 
-	if err != nil {
+	if err := viper.ReadInConfig(); err != nil {
 		return Credentials{}, err
 	}
 
